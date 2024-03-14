@@ -105,6 +105,7 @@ def upload_file() -> UploadFileResponse:
     tid = date.strftime('[%s] ')
     app.logger.info(tid + "Requested file upload")
 
+    app.logger.debug(tid + "The request content type is: " + request.content_type)
     app.logger.debug(tid + "The request contains the following headers: " + str(list(request.headers.keys())))
     app.logger.debug(tid + "The request contains the following args: " + str(list(request.args.keys())))
     app.logger.debug(tid + "The request contains the following files: " + str(list(request.files.keys())))
@@ -128,14 +129,17 @@ def upload_file() -> UploadFileResponse:
         abort(400, 'Please provide \'repo_full_name\' query parameter.')
 
     # Receive the file from the client as a stream
-    if 'file' not in request.files:
-        app.logger.error(tid + "Aborted 400 - \'file\' attachment not found")
-        abort(400, 'Please provide the RDF\\XML attachment into \'file\' form field.')
-    file_stream = request.files['file'].stream
-    file_name = request.files['file'].filename
-    if not file_stream:
-        app.logger.error(tid + "Aborted 400 - \'file\' attachment not a filestream")
-        abort(400, 'Please provide a valid \'file\' attachment in RDF\\XML format.')
+    if 'file' in request.files:
+        app.logger.info(tid + "Read RDF\\XML from file content")
+        file_stream = request.files['file'].stream
+        file_name = request.files['file'].filename
+        if not file_stream:
+            app.logger.error(tid + "Aborted 400 - \'file\' attachment not a filestream")
+            abort(400, 'Please provide a valid \'file\' attachment in RDF\\XML format.')
+    else:
+        app.logger.info(tid + "Read RDF\\XML from body stream")
+        file_stream = request.stream
+        file_name = vocabulary_name+".rdf"
 
     app.logger.info(tid + f"{file_name} will be pushed into {repo_full_name} for vocabulary {vocabulary_name}")
 
