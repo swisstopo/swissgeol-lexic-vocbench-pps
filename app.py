@@ -55,7 +55,7 @@ debug_mode = os.getenv("DEBUG_MODE", "False").lower() == "true"
 
 github_commit_branch_tpl = os.getenv("GH_COMMIT_BRANCH_TEMPLATE", "%timestamp%_%vocabulary_name%")
 github_commit_message_tpl = os.getenv("GH_COMMIT_MESSAGE_TEMPLATE", "Commit into %vocabulary_name% vocabulary")
-github_pr_title_tpl = os.getenv("GH_PULL_REQUEST_TITLE_TEMPLATE", "Release: date% - %vocabulary_name%")
+github_pr_title_tpl = os.getenv("GH_PULL_REQUEST_TITLE_TEMPLATE", "Release: %date% - %vocabulary_name%")
 github_pr_desc_tpl = os.getenv("GH_PULL_REQUEST_DESCRIPTION_TEMPLATE", "Description of the release")
 
 # CONFIGURE THE APPLICATION
