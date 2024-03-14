@@ -9,8 +9,13 @@ from flask import Flask, request, abort
 
 from github import Auth, GithubIntegration, UnknownObjectException
 
-# LOG CONFIGURATION
+# CONFIGURE THE ENVIRONMENT
 
+# Load all env variables
+load_dotenv()
+
+# Configure logging
+log_level = os.getenv('LOG_LEVEL', 'INFO')
 dictConfig({
     'version': 1,
     'formatters': {'default': {
@@ -22,32 +27,12 @@ dictConfig({
         'formatter': 'default'
     }},
     'root': {
-        'level': 'INFO',
+        'level': log_level,
         'handlers': ['wsgi']
     }
 })
 
-"""logFormatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-logLevel = logging.INFO
-rootLogger = logging.getLogger()
-
-if not os.path.exists('logs'):
-    os.makedirs('logs')
-fileHandler = logging.handlers.RotatingFileHandler("logs/output.log")
-fileHandler.setFormatter(logFormatter)
-fileHandler.setLevel(logLevel)
-rootLogger.addHandler(fileHandler)
-
-consoleHandler = logging.StreamHandler()
-consoleHandler.setFormatter(logFormatter)
-consoleHandler.setLevel(logLevel)
-rootLogger.addHandler(consoleHandler)"""
-
-# LOADING ENVIRONMENT VARIABLES
-
-load_dotenv()
-
-# Configurations
+# Load application configs
 github_app_id = os.getenv("GH_APP_ID")
 github_app_private_key = os.getenv("GH_APP_PRIVATE_KEY")
 endpoint_secret = os.getenv("INCOMING_SECRET")
