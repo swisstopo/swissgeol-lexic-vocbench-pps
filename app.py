@@ -105,9 +105,9 @@ def upload_file() -> UploadFileResponse:
     tid = date.strftime('[%s] ')
     app.logger.info(tid + "Requested file upload")
 
-    app.logger.debug(tid + "The request contains the following headers: " + str(request.headers.keys()))
-    app.logger.debug(tid + "The request contains the following args: " + str(request.args.keys()))
-    app.logger.debug(tid + "The request contains the following files: " + str(request.files.keys())
+    app.logger.debug(tid + "The request contains the following headers: " + str(list(request.headers.keys())))
+    app.logger.debug(tid + "The request contains the following args: " + str(list(request.args.keys())))
+    app.logger.debug(tid + "The request contains the following files: " + str(list(request.files.keys())))
 
     # Authenticate using the provided token
     provided_secret = request.headers.get('Authorization')
