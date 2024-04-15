@@ -192,11 +192,13 @@ def publish_file_to_github(file_stream, file_name, vocabulary_name, repo_full_na
         auth = Auth.AppAuth(github_app_id, github_app_private_key)
         github_integration = GithubIntegration(auth=auth)
 
-        app.logger.info(tid + "Searching the correct repository")
+        app.logger.info(tid + "Searching the correct repository between repositories autorized on GitHub App")
         repo = None
         for installation in github_integration.get_installations():
             for repo in installation.get_repos():
+                app.logger.info(tid + "Detected repository: " + repo.full_name)
                 if repo.full_name == res['repository']:
+                    app.logger.info(tid + "Found repository: " + repo.full_name)
                     repo = repo
 
         if repo is None:
