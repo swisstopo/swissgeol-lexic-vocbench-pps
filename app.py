@@ -195,11 +195,11 @@ def publish_file_to_github(file_stream, file_name, vocabulary_name, repo_full_na
         app.logger.info(tid + "Searching the correct repository between repositories autorized on GitHub App")
         repo = None
         for installation in github_integration.get_installations():
-            for repo in installation.get_repos():
-                app.logger.info(tid + "Detected repository: " + repo.full_name)
-                if repo.full_name == res['repository']:
-                    app.logger.info(tid + "Found repository: " + repo.full_name)
-                    repo = repo
+            for curr_repo in installation.get_repos():
+                app.logger.info(tid + "Detected repository: " + curr_repo.full_name)
+                if curr_repo.full_name == res['repository']:
+                    app.logger.info(tid + "Found repository: " + curr_repo.full_name)
+                    repo = curr_repo
 
         if repo is None:
             app.logger.error(tid + f"Aborted 401 - Not found authorization for repository: {res['repository']}")
