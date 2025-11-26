@@ -5,7 +5,12 @@ on:
     branches: [ dev, main ]
   
 name: AWS ECR push
-  
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write  
+
 jobs:
   deploy:
     name: Deploy
@@ -15,12 +20,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
+    - name: Configure AWS credentials from AWS account
+      uses: aws-actions/configure-aws-credentials@v5
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-central-1
+        role-to-assume: ${{ secrets.AWS_ROLE_ECR_PUSH }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        role-session-name: GitHub-OIDC
 
     - name: Login to Amazon ECR
       id: login-ecr
